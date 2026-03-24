@@ -1,41 +1,30 @@
 # macOS
 .DS_Store
 
-# Python
+# Python cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
 
-# Virtual envs
+# Virtual environments
 venv/
-.env
 .venv/
+.env
 
-# Local app/runtime
+# Local logs
 *.log
 
-# Large model/adapters/checkpoints
-adapters/
-adapters_50/
-adapters_clean/
-adapters_pc/
-adapters_pc2/
-adapters_v2/
-adapters_v3/
+# Local model artifacts and checkpoints
+adapters*/
 falcon_adapters/
-qwen25_adapters/
-qwen25_v2/
-qwen25_v2_88/
-qwen25_v3_120/
-qwen25_v4_paragraph/
-qwen25_v6_rewrite/
-qwen25_v7_final/
-qwen25_v8/
+qwen25_*/
 
-# Local datasets / experiments
+# Local datasets and experiments
 data_pc/
+dataV*/
+*_dataset.zip
 
-# Backup / duplicate files
+# Local overrides and scratch files
+app_local.py
+resume.md
 *.bak
 *copy*
