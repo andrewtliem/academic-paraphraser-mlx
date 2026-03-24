@@ -45,9 +45,3 @@ Then open [`frontend/rewrite_frontend.html`](/Users/andrewtannyliem/Documents/qw
 - [`docs/03-training.md`](/Users/andrewtannyliem/Documents/qwen-lora/docs/03-training.md)
 - [`docs/04-evaluation.md`](/Users/andrewtannyliem/Documents/qwen-lora/docs/04-evaluation.md)
 - [`docs/05-production.md`](/Users/andrewtannyliem/Documents/qwen-lora/docs/05-production.md)
-
-## Notes
-
-- `data/` is sourced from the dataset examples that were previously in `newData/`.
-- `examples/` is reserved for your own comparison outputs and prompt references.
-- The most important lesson in this repo is that dataset design mattered more than chasing lower loss.

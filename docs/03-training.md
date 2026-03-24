@@ -39,7 +39,7 @@ mlx_lm.lora \
 
 ## Notes
 
-- `--data ./data` uses the canonical dataset folder in this repo.
+- `--data ./data` points to the dataset folder used in this tutorial.
 - `./qwen25_v8` matches the adapter path already referenced by the app.
 - If your local `mlx-lm` version uses a different training entrypoint, keep the same arguments and adapt the command name only.
 
