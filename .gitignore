@@ -1,0 +1,43 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+venv/
+.env
+.venv/
+
+# Local app/runtime
+*.log
+
+# Large model/adapters/checkpoints
+adapters/
+adapters_50/
+adapters_clean/
+adapters_pc/
+adapters_pc2/
+adapters_v2/
+adapters_v3/
+falcon_adapters/
+qwen25_adapters/
+qwen25_v2/
+qwen25_v2_88/
+qwen25_v3_120/
+qwen25_v4_paragraph/
+qwen25_v6_rewrite/
+qwen25_v7_final/
+qwen25_v8/
+
+# Local datasets / experiments
+data/
+data_pc/
+newData/
+
+# Backup / duplicate files
+*.bak
+*copy*

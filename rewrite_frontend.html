@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrew EPON Rewrite</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel-2: #182142;
+      --text: #e9eefc;
+      --muted: #aab5d6;
+      --accent: #6ea8fe;
+      --border: #2a3563;
+      --ok: #7ee787;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #0f1630 100%);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+    .sub {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .card {
+      background: rgba(18, 25, 51, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    textarea, input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+    }
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1.4fr 120px 120px 120px;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    button {
+      background: var(--accent);
+      color: #081224;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+      min-height: 20px;
+    }
+    .ok { color: var(--ok); }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .controls { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Andrew EPON Rewrite</h1>
+    <div class="sub">Simple frontend for your local FastAPI rewrite service.</div>
+
+    <div class="card">
+      <div class="grid">
+        <div>
+          <label for="inputText">Original text</label>
+          <textarea id="inputText" placeholder="Paste the sentence or paragraph you want to rewrite..."></textarea>
+        </div>
+        <div>
+          <label for="outputText">Rewritten text</label>
+          <textarea id="outputText" placeholder="Model output will appear here..." readonly></textarea>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div>
+          <label for="instruction">Instruction</label>
+          <input id="instruction" value="Rewrite the following in a formal EPON research paper style. Avoid generic or business phrases and focus on technical clarity." />
+        </div>
+        <div>
+          <label for="maxTokens">Max tokens</label>
+          <input id="maxTokens" type="number" value="180" min="32" max="512" />
+        </div>
+        <div>
+          <label for="temperature">Temperature</label>
+          <input id="temperature" type="number" step="0.1" value="0.3" min="0" max="1.5" />
+        </div>
+        <div>
+          <label for="topP">Top-p</label>
+          <input id="topP" type="number" step="0.1" value="0.9" min="0.1" max="1.0" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="rewriteBtn">Rewrite</button>
+        <button id="copyBtn" class="ghost" type="button">Copy output</button>
+        <button id="swapBtn" class="ghost" type="button">Use output as input</button>
+        <span id="status" class="status"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiBase = 'http://127.0.0.1:8000';
+    const inputText = document.getElementById('inputText');
+    const outputText = document.getElementById('outputText');
+    const instruction = document.getElementById('instruction');
+    const maxTokens = document.getElementById('maxTokens');
+    const temperature = document.getElementById('temperature');
+    const topP = document.getElementById('topP');
+    const rewriteBtn = document.getElementById('rewriteBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const status = document.getElementById('status');
+
+    async function rewrite() {
+      const text = inputText.value.trim();
+      if (!text) {
+        status.textContent = 'Please enter some text first.';
+        return;
+      }
+
+      rewriteBtn.disabled = true;
+      status.textContent = 'Rewriting...';
+      status.className = 'status';
+
+      try {
+        const res = await fetch(`${apiBase}/rewrite`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text,
+            instruction: instruction.value,
+            max_tokens: Number(maxTokens.value),
+            temperature: Number(temperature.value),
+            top_p: Number(topP.value)
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.detail || 'Request failed');
+        }
+
+        outputText.value = data.rewritten_text || '';
+        status.textContent = 'Rewrite complete.';
+        status.className = 'status ok';
+      } catch (err) {
+        status.textContent = `Error: ${err.message}`;
+        status.className = 'status';
+      } finally {
+        rewriteBtn.disabled = false;
+      }
+    }
+
+    rewriteBtn.addEventListener('click', rewrite);
+
+    copyBtn.addEventListener('click', async () => {
+      if (!outputText.value.trim()) return;
+      await navigator.clipboard.writeText(outputText.value);
+      status.textContent = 'Output copied.';
+      status.className = 'status ok';
+    });
+
+    swapBtn.addEventListener('click', () => {
+      if (!outputText.value.trim()) return;
+      inputText.value = outputText.value;
+      outputText.value = '';
+      status.textContent = 'Output moved to input.';
+      status.className = 'status ok';
+    });
+  </script>
+</body>
+</html>
