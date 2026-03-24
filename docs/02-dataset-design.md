@@ -13,6 +13,29 @@ Recommended data types:
 - rewrite pairs
 - paragraph improvement pairs
 
+## Why Dataset Design Mattered Most
+
+The main lesson from the project was that dataset design mattered more than just changing hyperparameters.
+
+The model improved when the data matched the actual task:
+
+- input: weaker or rougher technical writing
+- output: the same idea rewritten in the target academic style
+
+When the dataset drifted toward explanation or unrelated answer generation, the model behavior also drifted.
+
+## Dataset Evolution
+
+The tutorial is stronger if the dataset changes are shown as a progression:
+
+- `v1`: explanation-only dataset
+- `v2`: more examples, but still limited task alignment
+- `v3`: paragraph-style data
+- `v6` and `v7`: rewrite/paraphrase style became the main focus
+- `v8`: cleaner split into train, validation, and test sets
+
+That progression explains why the final setup worked better. The data became more aligned with the real inference task.
+
 ## Current Format
 
 Each JSONL row uses a `messages` array:
@@ -47,3 +70,12 @@ Every pair should satisfy all of these:
 3. Stay on the same topic.
 
 Some existing rows are noisy and should be cleaned before retraining because mismatched pairs will teach unstable behavior.
+
+## What to Clean Before Retraining
+
+Remove or rewrite rows with these problems:
+
+- the output changes topic
+- the output adds claims not present in the input
+- the output keeps the same wording without meaningful improvement
+- the output sounds formal but does not preserve the original meaning

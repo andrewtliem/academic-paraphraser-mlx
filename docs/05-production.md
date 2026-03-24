@@ -2,6 +2,8 @@
 
 This repo includes a local inference and demo layer.
 
+The production goal here is narrow and practical: take a fixed rewrite task and expose it through a small local API.
+
 ## API
 
 Start the FastAPI server:
@@ -22,6 +24,18 @@ Useful routes:
 - `GET /health`
 - `POST /rewrite`
 - `GET /docs`
+
+## Why Use a Custom FastAPI Wrapper
+
+For this project, a custom wrapper is easier to reason about than a generic chat-serving layer.
+
+It gives direct control over:
+
+- the fixed rewrite instruction
+- adapter path selection
+- request validation
+- generation limits
+- the exact response shape used by the frontend
 
 ## Environment Variables
 
@@ -53,3 +67,10 @@ The page provides:
 - generation controls
 - sample EPON inputs
 - a short tutorial flow for local testing
+
+## Production Lessons
+
+- keep the task narrow
+- keep the prompt consistent with training
+- expose only the parameters you actually want to tune
+- prefer simple infrastructure first, then optimize later

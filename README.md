@@ -1,6 +1,6 @@
 # qwen-writing-style-mlx
 
-Tutorial repo for fine-tuning Qwen with MLX for academic writing-style transfer, then serving the adapter through FastAPI.
+This tutorial shows how to fine-tune a small Qwen instruct model with MLX on Apple Silicon to rewrite technical text in your own writing style. Instead of building a general chatbot, the goal is to create a narrow writing-style assistant for revision and paraphrasing tasks.
 
 ## Structure
 
@@ -50,3 +50,4 @@ Then open [`frontend/rewrite_frontend.html`](/Users/andrewtannyliem/Documents/qw
 
 - `data/` is sourced from the dataset examples that were previously in `newData/`.
 - `examples/` is reserved for your own comparison outputs and prompt references.
+- The most important lesson in this repo is that dataset design mattered more than chasing lower loss.
