@@ -34,7 +34,7 @@ mlx_lm.lora \
   --model mlx-community/Qwen2.5-0.5B-Instruct-4bit \
   --train \
   --data ./data \
-  --adapter-path ./qwen25_v8 \
+  --adapter-path ./qwen25_v9 \
   --iters 300 \
   --batch-size 1 \
   --grad-accumulation-steps 8 \
@@ -46,7 +46,7 @@ mlx_lm.lora \
 ## 📌 Practical Notes
 
 - `--data ./data` points to the dataset folder used in this tutorial
-- `./qwen25_v8` is the adapter path referenced by the app
+- `./qwen25_v9` is the adapter path referenced by the app
 - if your `mlx-lm` version uses a different training entrypoint, keep the arguments and adjust only the command name
 
 ## 🧠 How to Think About Training

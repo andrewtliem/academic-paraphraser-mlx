@@ -37,6 +37,7 @@ The tutorial becomes much more useful when the dataset changes are shown honestl
 - `v3` — paragraph-style data
 - `v6` and `v7` — rewrite/paraphrase style became the main direction
 - `v8` — cleaner train, validation, and test split
+- `v9` — further cleaning to remove noisy or mismatched examples
 
 This progression shows the real turning point: the data became better aligned with the actual paraphrasing task.
 
@@ -61,9 +62,9 @@ Each JSONL row uses a `messages` array:
 
 ## 📊 Current Split
 
-- train — 180 examples
-- valid — 30 examples
-- test — 30 examples
+- train — 90 examples
+- valid — 15 examples
+- test — 15 examples
 
 ## 📝 Quality Rules
 
